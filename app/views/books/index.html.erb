@@ -1,6 +1,3 @@
-<head>
-</head>
-<body>
 <p id="notice"><%= notice %></p>
 
 <h1>Books</h1>
@@ -13,24 +10,36 @@
       <th colspan="3"></th>
     </tr>
   </thead>
+  <% @books.each do |book|%>
   <tbody>
-  
-   
-  </tbody>
+    <tr>
+      <td><%= book.title %></td>
+      <td><%= book.body %></td>
+      <td><%= link_to "Show", "/books/#{book.id}" %></td>
+      <td><%= link_to "Edit" , edit_book_path(book.id)%></td>
+      <td><%= link_to "Destroy", book_path(book.id), method: :delete, "data-confirm" => "本当に削除しますか？" %></td>
+    </tr>
+　</tbody>
+  <% end %>
 </table>
 <h2>New book</h2>
+<% if @book.errors.any? %>
+  <%= @book.errors.count %>件のerrorが発生しました
+  <ul>
+    <% @book.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>
 
-<form class="new_book" action="/book" accept-charset="UTF-8" method="post">
-  <div class="field">
-    <lavel for="book_title">Title</lavel>
-    <input class="book_title" type="text" name="book[title]" id="book_title">
-  </div>
-  <div class="fild">
-    <level for="book_body">Body</level>
-    <textarea class="book_body" name="book[body]" id="book_body">
-    </textarea>
-    
-  </div>
-</form>
-</body>
+<%= form_with model: @book do |f| %>
+  <h4>Title</h4>
+  <%= f.text_field :title %>
+
+  <h4>Body</h4>
+  <%= f.text_area :body %>
+  <br>
+  <%= f.submit 'Create Book' %>
+
+<% end %>
 
